@@ -61,6 +61,7 @@ public class IndexPage {
         return listOfcarts;
     }
 
+
     public WebElement getNextPageButton() {
         return nextPageButton;
     }

@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ProductTest extends BaseTest{
@@ -29,15 +30,25 @@ public class ProductTest extends BaseTest{
 
 
     @Test(description = "get ALL available items to purchase", priority = 1,groups = {"EndToEndTest"})
-    public void validateAvailableItems(){
-        List<Card> allItemsList = demoBlazeSteps.getAllAvailableItemsToPurchase();
-        demoBlazeSteps.printOut("TEST:  " + allItemsList.size());
-        for (Card card : allItemsList){
-            demoBlazeSteps.printOut(card.getImageRef());
-            demoBlazeSteps.printOut(card.getCardName());
-            demoBlazeSteps.printOut(card.getDescription());
-            demoBlazeSteps.printOut(card.getPrice());
-        }
+    public void validateAvailableItems() throws Exception {
+            //Load Expected results
+            List<String[]>  dataPath;
+            dataPath = readCsvFile("DataTestProductsStageFilePath");
+            List<Card> expectedCardsListInfo = demoBlazeSteps.createCardsListFromCsvFile(dataPath);
+
+            //Get Items in Page
+            List<Card> allItemsList = demoBlazeSteps.getAllAvailableItemsToPurchase();
+
+            //Assert items in page vs expected results
+            for (Card card : allItemsList){
+                demoBlazeSteps.printOut("test :" + card.getCardName() + ": "+ expectedCardsListInfo.contains(card));
+                Assert.assertEquals(true,expectedCardsListInfo.contains(card) );
+
+                demoBlazeSteps.printOut(card.getImageRef());
+                demoBlazeSteps.printOut(card.getCardName());
+                demoBlazeSteps.printOut(card.getDescription());
+                demoBlazeSteps.printOut(card.getPrice());
+            }
     }
 
     @Test (description = "validate product details for Iphone 6 32gb" , priority = 4,groups = {"EndToEndTest"})
@@ -50,6 +61,8 @@ public class ProductTest extends BaseTest{
         Assert.assertEquals(demoBlazeSteps.stringDeviceName(),Iphone632gb);
         Assert.assertEquals(demoBlazeSteps.imageIsDisplayed(),true);
     }
+
+
 
 
 

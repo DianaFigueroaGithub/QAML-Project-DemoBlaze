@@ -264,5 +264,17 @@ public class DemoBlazeSteps extends BaseSteps {
         waitForElementToBeVisible(demoBlazeIndexPage.getPrevButton());
     }
 
+    public List<Card> createCardsListFromCsvFile (List<String[]> expectedListDataArray) {
+        List<Card> listOfcarts = new ArrayList<Card>();
+        for ( String[] itemDetails :expectedListDataArray ) {
+            Card card = new Card();
+            card.setCardName(itemDetails[1]);
+            card.setPrice(itemDetails[3]);
+            card.setDescription(itemDetails[2]);
+            card.setImageRef(itemDetails[0]);
+            listOfcarts.add(card);
+        }
+        return listOfcarts;
+    }
 
 }
